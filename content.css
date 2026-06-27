@@ -1,0 +1,153 @@
+/* Minimalist Gmail inbox list. Pure CSS — no scripts, so there is nothing to
+   re-render, flicker, or insert into the table (clicks stay native). Loaded only
+   on mail.google.com (see manifest); every selector targets a mail-list row. */
+
+/* rows — pure white, no special colour for read/opened mail, NO lines. Gmail draws
+   its row separators and the opened-row left accent with box-shadow (not borders),
+   so we clear box-shadow + border on the row and its cells. */
+.zA, .zA.yO, .zA.zE { background-color: #ffffff !important; border: 0 !important; box-shadow: none !important; color: #1f2125 !important; }
+.zA:hover, .zA.yO:hover, .zA.zE:hover { background-color: #f6f6f4 !important; }
+.zA > td { border: 0 !important; box-shadow: none !important; }
+
+/* read vs unread = same colour, the CONTENT opacity is what changes (bg stays white) */
+.zA.zE .yW, .zA.zE .bog { font-weight: 640 !important; }
+.zA.yO .yW, .zA.yO .bog { font-weight: 430 !important; }
+.zA.yO .yX, .zA.yO .a4W, .zA.yO .xW { opacity: 0.62 !important; }
+.yW, .bog { color: #1f2125 !important; font-size: 14px !important; line-height: 1.3 !important; }
+
+/* unread accent dot. The gutter is reserved on every row (transparent dot), so
+   read and unread sender names stay left-aligned. */
+.zA .yW::before {
+  background: transparent;
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+  height: 6px;
+  margin: 0 9px 2px 0;
+  vertical-align: middle;
+  width: 6px;
+}
+.zA.zE .yW::before { background: #2f80ed !important; }
+
+/* subject on one line, snippet preview hidden */
+.bog, .y6 { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+.y2, .brd, .brc { display: none !important; }
+
+/* date */
+.xW {
+  color: #8a8f96 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  min-width: 70px !important;
+  padding-right: 16px !important;
+  text-align: right !important;
+}
+
+/* Gmail's own label chips, moved after the subject and styled as soft pills.
+   .xT is Gmail's flex row: [labels .yi | subject .y6 | snippet .y2]. We keep
+   each label's native colour and just reorder + round it — no JS rebuild. */
+.zA .yX { padding-right: 18px !important; } /* tighten the sender→subject gap (Gmail's default is 32px) */
+.zA .xT { align-items: center !important; }
+.zA .xT .y6 { order: 1 !important; flex: 1 1 auto !important; min-width: 0 !important; }
+.zA .xT .yi { order: 2 !important; margin-left: auto !important; flex: 0 0 auto !important; padding-left: 8px !important; }
+.zA .ar.as { display: inline-flex !important; align-items: center !important; margin-left: 5px !important; }
+.zA .at {
+  border-radius: 4px !important;
+  display: inline-block !important;
+  filter: saturate(0.66) brightness(1.06) !important; /* soften Gmail's label colours toward soft pastels */
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  height: auto !important;
+  letter-spacing: 0 !important;
+  line-height: normal !important;
+  padding: 2px 5px !important;      /* padding drives the pill height; symmetric */
+  vertical-align: middle !important;
+}
+/* The label text is nested .at > .au > .av, and Gmail PINS the inner .av to a fixed
+   ~18px height. That top-anchored the 12.7px glyph, so it rode ~3px high and bloated
+   the pill to 22px (all the line-height tweaks failed because they targeted the wrong
+   element). Fix: let .av size to its text and flex-centre it. Measured offset 0, 16.7px. */
+.zA .at .au {
+  display: block !important;
+  height: auto !important;
+  line-height: normal !important;
+  width: auto !important;
+}
+.zA .at .av {
+  align-items: center !important;
+  display: flex !important;
+  height: auto !important;
+  line-height: normal !important;
+}
+
+/* "Aujourd'hui" tag on today's mail (content.js sets data-nm-today). Rendered as a
+   flex item at the right end of the subject row, after the labels. */
+.zA[data-nm-today] .xT::after {
+  align-items: center !important;
+  background: #e4f3ea !important;
+  border-radius: 4px !important;
+  color: #2f6b43 !important;
+  content: "Aujourd'hui" !important;
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: normal !important;
+  margin-left: 6px !important;
+  order: 3 !important;
+  padding: 2px 6px !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+}
+
+/* checkbox + important chevron calm at rest; an unset star fades, a set one stays.
+   ponytail: "Non suivi" is Gmail-FR's unstarred aria-label — fine for this account. */
+.zA .oZ-x3,
+.zA .WA,
+.zA .apU:has([aria-label="Non suivi"]) {
+  opacity: 0.34 !important;
+  transition: opacity 120ms ease !important;
+}
+.zA:hover .oZ-x3,
+.zA:hover .WA,
+.zA:hover .apU,
+.zA.x7 .oZ-x3 { opacity: 1 !important; }
+
+/* time-section headers (Aujourd'hui / Hier / 7 derniers jours). content.js tags
+   the first row of each bucket; the label is drawn left-aligned in a reserved
+   band via ::before. The row (a flex container, already position:relative) just
+   gets taller — no <tr> is inserted and no row is reindexed. */
+.zA[data-nm-section] {
+  height: auto !important;
+  padding-top: 34px !important;
+  position: relative;
+}
+.zA[data-nm-section]::before {
+  color: #8a8f96;
+  content: attr(data-nm-section);
+  font-size: 12px;
+  font-weight: 600;
+  left: 16px;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  position: absolute;
+  top: 9px;
+  white-space: nowrap;
+}
+
+/* ---- chrome cleanup ------------------------------------------------------ */
+/* Hide the Gmail wordmark logo (top-left). */
+a[aria-label="Gmail" i] { display: none !important; }
+
+/* Hide the full user-labels section in the sidebar — the "Libellés" header + its
+   "+" (.aAw.FgKVne) and the label rows + "more" chevron (the .yJ right after it) —
+   but ONLY when the sidebar is COLLAPSED. We make the nav a container and key off
+   its width with a container query (reactive, no JS, no stale state). The system
+   group (Inbox/Categories — the .yJ before the header) is untouched. The "Sidebar
+   labels" option adds .mg-labels on <html> to keep labels shown even when collapsed. */
+[role="navigation"] { container-type: inline-size !important; }
+@container (max-width: 119px) {
+  html:not(.mg-labels) [role="navigation"] .aAw.FgKVne,
+  html:not(.mg-labels) [role="navigation"] .aAw.FgKVne + .yJ { display: none !important; }
+}

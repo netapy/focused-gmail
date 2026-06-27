@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Minimal Gmail — settings</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    background: #fff; color: #1f2125; margin: 0; width: 300px; padding: 18px 18px 14px;
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  h1 { font-size: 13px; font-weight: 600; margin: 0; }
+  .sub { color: #8a8f96; font-size: 11.5px; margin: 2px 0 16px; }
+  h2 { font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: #9aa0a6; margin: 0 0 4px; }
+  .group { margin-bottom: 16px; }
+  .row { display: flex; align-items: center; justify-content: space-between; min-height: 32px; }
+  .row + .row { border-top: 1px solid #f3f3f1; }
+  label { color: #1f2125; }
+  .key {
+    font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    min-width: 74px; text-align: center; padding: 6px 8px;
+    border: 1px solid #e4e4e2; border-radius: 6px; background: #fafafa; color: #3c4043;
+    cursor: pointer; transition: border-color .12s, color .12s, background .12s;
+  }
+  .key:hover { border-color: #d2d2d0; }
+  .key.rec { border-color: #2f80ed; color: #2f80ed; background: #fff; }
+  input[type=checkbox] { width: 15px; height: 15px; accent-color: #1f2125; cursor: pointer; margin: 0; }
+  .foot { color: #b6bac0; font-size: 11px; min-height: 14px; margin-top: 10px; }
+  .saved { color: #2f6b43; opacity: 0; transition: opacity .25s; }
+</style>
+</head>
+<body>
+  <h1>Minimal Gmail</h1>
+  <p class="sub">Hover a mail, then press the key.</p>
+
+  <div class="group">
+    <h2>Shortcuts</h2>
+    <div class="row"><label>Archive</label><button class="key" data-act="archive"></button></div>
+    <div class="row"><label>Delete</label><button class="key" data-act="delete"></button></div>
+    <div class="row"><label>Read / unread</label><button class="key" data-act="read"></button></div>
+    <div class="row"><label>Star</label><button class="key" data-act="star"></button></div>
+    <div class="row"><label>Snooze</label><button class="key" data-act="snooze"></button></div>
+    <div class="row"><label>Select</label><button class="key" data-act="select"></button></div>
+  </div>
+
+  <div class="group">
+    <h2>Behavior</h2>
+    <div class="row"><label>Hover shortcuts</label><input type="checkbox" data-tog="hoverActions"></div>
+    <div class="row"><label>Date headers</label><input type="checkbox" data-tog="sections"></div>
+    <div class="row"><label>Today tag</label><input type="checkbox" data-tog="todayTag"></div>
+    <div class="row"><label>Labels when collapsed</label><input type="checkbox" data-tog="sidebarLabels"></div>
+  </div>
+
+  <div class="foot"><span class="saved">✓ Saved</span></div>
+  <script src="options.js"></script>
+</body>
+</html>

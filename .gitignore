@@ -1,0 +1,10 @@
+# Local design references — contain real inbox screenshots, never publish
+reference/
+
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp

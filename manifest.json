@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Minimal Gmail",
+  "version": "0.8.3",
+  "description": "A calmer, minimalist Gmail inbox list with hover-to-act keyboard shortcuts and a small settings page.",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "options.html",
+    "default_title": "Minimal Gmail — settings"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "css": ["content.css"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
