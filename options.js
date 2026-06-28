@@ -1,4 +1,4 @@
-// Sober settings page for the Épure extension. Reads/writes
+// Sober settings page for the Focused Gmail extension. Reads/writes
 // chrome.storage.sync; content.js picks up changes live (no Gmail reload needed).
 const DEFAULTS = {
   keys: { archive: "e", delete: "Backspace", read: "u", star: "s", snooze: "b", select: "x" },

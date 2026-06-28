@@ -1,6 +1,4 @@
-# Épure
-
-*Épure (French) — a pared-down, minimalist form; the essence of something with everything inessential removed.*
+# Focused Gmail
 
 A small **Manifest V3** Chrome extension that makes Gmail's inbox **list** calmer and
 more minimal — Notion-style label pills, time-section headers, and keyboard

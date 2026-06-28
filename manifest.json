@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Épure",
-  "version": "0.9.0",
+  "name": "Focused Gmail",
+  "version": "0.9.1",
   "description": "A calmer, minimalist Gmail inbox list with hover-to-act keyboard shortcuts and a small settings page.",
   "permissions": ["storage"],
   "action": {
     "default_popup": "options.html",
-    "default_title": "Épure — settings"
+    "default_title": "Focused Gmail — settings"
   },
   "options_ui": {
     "page": "options.html",
