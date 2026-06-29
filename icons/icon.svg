@@ -1,11 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Focused Mail icon">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3C414A"/>
-      <stop offset="1" stop-color="#1F2228"/>
-    </linearGradient>
-  </defs>
-  <rect x="2.5" y="2.5" width="123" height="123" rx="29" fill="url(#g)"/>
-  <rect x="28.2" y="38.4" width="71.7" height="51.2" rx="7.7" fill="#ffffff"/>
-  <path d="M33.5 43.8 L64 68.1 L94.5 43.8" fill="none" stroke="#969CA8" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="2.5" y="2.5" width="123" height="123" rx="29" fill="#ffffff"/>
+  <rect x="28.2" y="38.4" width="71.7" height="51.2" rx="10.9" fill="none" stroke="#1a1a1c" stroke-width="6.4"/>
+  <path d="M33.1 43.3 L64 62 L94.9 43.3" fill="none" stroke="#1a1a1c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
