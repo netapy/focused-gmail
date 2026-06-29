@@ -1,12 +1,22 @@
 {
   "manifest_version": 3,
-  "name": "Focused Gmail",
-  "version": "0.9.1",
-  "description": "A calmer, minimalist Gmail inbox list with hover-to-act keyboard shortcuts and a small settings page.",
+  "name": "Focused Mail",
+  "version": "0.10.0",
+  "description": "A calmer, minimalist inbox list for Gmail™, with hover-to-act shortcuts and a small settings page.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "permissions": ["storage"],
   "action": {
     "default_popup": "options.html",
-    "default_title": "Focused Gmail — settings"
+    "default_title": "Focused Mail — settings",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
   "options_ui": {
     "page": "options.html",

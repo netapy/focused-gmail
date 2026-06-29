@@ -80,14 +80,15 @@
   line-height: normal !important;
 }
 
-/* "Aujourd'hui" tag on today's mail (content.js sets data-nm-today). Rendered as a
-   flex item at the right end of the subject row, after the labels. */
+/* Today tag on today's mail. content.js sets data-nm-today to the localised label
+   ("Today" / "Aujourd'hui"); we render it via attr(). Flex item at the right end of
+   the subject row, after the labels. */
 .zA[data-nm-today] .xT::after {
   align-items: center !important;
   background: #e4f3ea !important;
   border-radius: 4px !important;
   color: #2f6b43 !important;
-  content: "Aujourd'hui" !important;
+  content: attr(data-nm-today) !important;
   display: inline-flex !important;
   flex: 0 0 auto !important;
   font-size: 10px !important;

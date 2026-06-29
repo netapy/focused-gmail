@@ -3,10 +3,10 @@
   // rendered only on hover; FR labels, this fr-FR account) OR a CSS selector for an
   // always-present control (star, checkbox; locale-free).
   const ACTION_DEFS = {
-    archive: { label: ["Archiver"] },
-    delete: { label: ["Supprimer"] },
-    read: { label: ["Marquer comme"] },
-    snooze: { label: ["Mettre en attente"] },
+    archive: { label: ["Archiver", "Archive"] },
+    delete: { label: ["Supprimer", "Delete"] },
+    read: { label: ["Marquer comme", "Mark as"] },
+    snooze: { label: ["Mettre en attente", "Snooze"] },
     star: { sel: ".apU [role='button'], .apU span.T-KT" },
     select: { sel: ".oZ-x3 [role='checkbox']" },
   };
@@ -20,8 +20,27 @@
     sidebarLabels: false, // hide the sidebar's user-label color dots by default
   };
 
-  const SECTIONS = ["Aujourd'hui", "Hier", "7 derniers jours", "Plus ancien"];
-  const MONTHS = "janv févr mars avr mai juin juil août sept oct nov déc".split(" ");
+  // Display language follows the browser: section headers and the Today tag are shown
+  // in EN or FR accordingly. The value is written to data-nm-section / data-nm-today
+  // and drawn by CSS via attr(), so localising these strings is all that's needed.
+  const LANG = (navigator.language || "en").toLowerCase().startsWith("fr") ? "fr" : "en";
+  const STR = {
+    fr: { sections: ["Aujourd'hui", "Hier", "7 derniers jours", "Plus ancien"], today: "Aujourd'hui" },
+    en: { sections: ["Today", "Yesterday", "Last 7 days", "Older"], today: "Today" },
+  }[LANG];
+  const SECTIONS = STR.sections;
+  const TODAY_LABEL = STR.today;
+
+  // Month-name → index, accepting French AND English forms — Gmail's date tooltips are
+  // in the account's language, which is independent of the browser language above.
+  // Most-specific prefixes first so e.g. "mars" matches before "mar".
+  const MONTHS = [
+    ["janv", 0], ["jan", 0], ["févr", 1], ["fevr", 1], ["feb", 1], ["mars", 2], ["mar", 2],
+    ["avril", 3], ["avr", 3], ["apr", 3], ["mai", 4], ["may", 4], ["juin", 5], ["jun", 5],
+    ["juil", 6], ["jul", 6], ["août", 7], ["aout", 7], ["aug", 7], ["sept", 8], ["sep", 8],
+    ["oct", 9], ["nov", 10], ["déc", 11], ["dec", 11],
+  ];
+  const monthIndex = (w) => { for (const [p, i] of MONTHS) if (w.startsWith(p)) return i; return -1; };
 
   let settings = DEFAULTS;
   let keymap = buildKeymap(DEFAULTS);
@@ -96,20 +115,21 @@
         else row.removeAttribute("data-nm-section");
       }
       const isToday = !!(settings.todayTag && rank === 0);
-      if (row.hasAttribute("data-nm-today") !== isToday) {
-        if (isToday) row.setAttribute("data-nm-today", "");
-        else row.removeAttribute("data-nm-today");
-      }
+      const curToday = row.getAttribute("data-nm-today");
+      if (isToday) { if (curToday !== TODAY_LABEL) row.setAttribute("data-nm-today", TODAY_LABEL); }
+      else if (curToday !== null) row.removeAttribute("data-nm-today");
     }
   }
 
   function rankOf(row, today) {
-    const title = row.querySelector(".xW span[title]")?.getAttribute("title") || "";
-    const m = title.match(/(\d{1,2})\s+([a-zûé.]+)\s+(\d{4})/i);
-    if (!m) return null;
-    const month = MONTHS.findIndex((name) => m[2].toLowerCase().startsWith(name));
+    const title = (row.querySelector(".xW span[title]")?.getAttribute("title") || "").toLowerCase();
+    const year = title.match(/\b(\d{4})\b/);
+    const day = title.match(/\b(\d{1,2})\b/); // first 1–2 digit run = the day (the 4-digit year is skipped)
+    if (!year || !day) return null;
+    let month = -1;
+    for (const w of title.match(/[a-zà-ÿ.]+/g) || []) { const mi = monthIndex(w); if (mi >= 0) { month = mi; break; } }
     if (month < 0) return null;
-    const diff = Math.round((today - new Date(+m[3], month, +m[1])) / 86400000);
+    const diff = Math.round((today - new Date(+year[1], month, +day[1])) / 86400000);
     return diff <= 0 ? 0 : diff === 1 ? 1 : diff < 7 ? 2 : 3;
   }
 
